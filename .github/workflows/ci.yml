@@ -10,19 +10,24 @@ jobs:
   build-and-test:
     runs-on: ubuntu-latest
 
+    env:
+      POSTGRES_USER: yourusername
+      POSTGRES_PASSWORD: yourpassword
+      POSTGRES_DB: yourdatabase
+
     services:
       db:
         image: postgres:13
         env:
-          POSTGRES_USER: yourusername
-          POSTGRES_PASSWORD: yourpassword
-          POSTGRES_DB: yourdatabase
+          POSTGRES_USER: ${{ env.POSTGRES_USER }}
+          POSTGRES_PASSWORD: ${{ env.POSTGRES_PASSWORD }}
+          POSTGRES_DB: ${{ env.POSTGRES_DB }}
         ports:
           - 5432:5432
         options: >-
-          --health-cmd pg_isready -U yourusername
-          --health-interval 10s
-          --health-timeout 5s
+          --health-cmd "pg_isready -U ${{ env.POSTGRES_USER }}" 
+          --health-interval 10s 
+          --health-timeout 5s 
           --health-retries 5
 
     steps:
@@ -48,12 +53,8 @@ jobs:
         done
 
     - name: Set DATABASE_URL
-      env:
-        POSTGRES_USER: yourusername
-        POSTGRES_PASSWORD: yourpassword
-        POSTGRES_DB: yourdatabase
       run: |
-        echo "DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@localhost:5432/${POSTGRES_DB}" >> $GITHUB_ENV
+        echo "DATABASE_URL=postgresql://${{ env.POSTGRES_USER }}:${{ env.POSTGRES_PASSWORD }}@localhost:5432/${{ env.POSTGRES_DB }}" >> $GITHUB_ENV
 
     - name: Run migrations
       env:
