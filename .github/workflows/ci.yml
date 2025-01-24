@@ -19,15 +19,15 @@ jobs:
       db:
         image: postgres:13
         env:
-          POSTGRES_USER: ${{ env.POSTGRES_USER }}
-          POSTGRES_PASSWORD: ${{ env.POSTGRES_PASSWORD }}
-          POSTGRES_DB: ${{ env.POSTGRES_DB }}
+          POSTGRES_USER: yourusername
+          POSTGRES_PASSWORD: yourpassword
+          POSTGRES_DB: yourdatabase
         ports:
           - 5432:5432
         options: >-
-          --health-cmd "pg_isready -U ${{ env.POSTGRES_USER }}" 
-          --health-interval 10s 
-          --health-timeout 5s 
+          --health-cmd "pg_isready -U yourusername"
+          --health-interval 10s
+          --health-timeout 5s
           --health-retries 5
 
     steps:
@@ -36,7 +36,7 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
-        python-version: '3.9'
+        python-version: '3.12'  # Обновите при необходимости
 
     - name: Install dependencies
       run: |
