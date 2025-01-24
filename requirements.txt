@@ -1,0 +1,14 @@
+fastapi
+uvicorn[standard]
+pandas
+numpy
+tensorflow
+sqlalchemy
+psycopg2-binary
+jinja2
+python-multipart
+alembic
+scikit-learn
+pytest
+pytest-asyncio
+httpx
