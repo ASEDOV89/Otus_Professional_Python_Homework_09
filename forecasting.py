@@ -111,14 +111,15 @@ def forecast_item_sales(model, scaler, last_known_data, forecast_days, feature_c
 def train_item_model(X, y):
     from sklearn.preprocessing import StandardScaler
     from tensorflow.keras.models import Sequential
-    from tensorflow.keras.layers import Dense
+    from tensorflow.keras.layers import Dense, Input
 
     scaler = StandardScaler()
     X_scaled = scaler.fit_transform(X)
 
     input_dim = X_scaled.shape[1]
     model = Sequential()
-    model.add(Dense(64, activation='relu', input_shape=(input_dim,)))
+    model.add(Input(shape=(input_dim,)))
+    model.add(Dense(64, activation='relu'))
     model.add(Dense(32, activation='relu'))
     model.add(Dense(1))
 

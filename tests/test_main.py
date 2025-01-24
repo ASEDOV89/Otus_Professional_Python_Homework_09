@@ -1,11 +1,11 @@
 import pytest
-from httpx import AsyncClient
+from httpx import AsyncClient, ASGITransport
 
 from main import app
 
 @pytest.mark.asyncio
 async def test_read_root():
-    async with AsyncClient(app=app, base_url="http://test") as ac:
+    async with AsyncClient(transport=ASGITransport(app)) as ac:
         response = await ac.get("/")
     assert response.status_code == 200
     assert "Прогноз продаж на следующие 20 дней" in response.text
@@ -17,7 +17,7 @@ async def test_add_sale():
         "quantity": 5,
         "item_id": 1
     }
-    async with AsyncClient(app=app, base_url="http://test") as ac:
+    async with AsyncClient(transport=ASGITransport(app)) as ac:
         response = await ac.post("/sales", json=sale_data)
     assert response.status_code == 200
     assert response.json()["sale"]["quantity"] == 5
