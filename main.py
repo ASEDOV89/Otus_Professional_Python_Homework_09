@@ -37,8 +37,7 @@ def read_root(request: Request, db: Session = Depends(get_db)):
         for sale in past_sales
     ]
 
-    return templates.TemplateResponse("index.html", {
-        "request": request,
+    return templates.TemplateResponse(request, "index.html", {
         "forecast": forecast_list,
         "past_sales": past_sales_list
     })
